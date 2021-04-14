@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+<script src="https://jsuites.net/v4/jsuites.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+
+<h1>IP 割り当て</h1>
+
+<div id="spreadsheet1"></div>
+
+<button id="download">Export as CSV</button>
+<script>
+    function csvToArray(filename) {
+        // CSVファイルを文字列として取得
+        var srt = new XMLHttpRequest();
+        srt.open("GET", filename, false);
+        try {
+            srt.send(null);
+        } catch (err) {
+            console.log(err)
+        }
+
+        // 配列を用意
+        var csvArr = [];
+
+        // 改行ごとに配列化
+        var lines = srt.responseText.split("\n");
+
+        // 1行ごとに処理
+        for (var i = 0; i < lines.length; ++i) {
+            csvArr.push(lines[i]);
+        }
+        return csvArr;
+    }
+
+    var save = function () {
+        console.log("save");
+        current = ipsheet.getJson();
+
+        $.ajax({
+            type: "POST",
+            url: "save.php",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(current)
+        });
+    }
+
+    var ipsheet = jspreadsheet(document.getElementById('spreadsheet1'), {
+        url: "data.json",
+        tableOverflow: true,
+        columns: [
+            { title: "IP アドレス", type: 'text', width: 160, readOnly: true },
+            { title: "使用者", type: 'dropdown', width: 180, source: csvToArray("name.txt") },
+            { title: "機器種別", type: 'dropdown', width: 180, source: ["PC", "ネットワーク機器", "その他"] },
+            { title: "その他", type: 'text', width: 400 },
+        ],
+        onchange: save,
+        updateTable: function (el, cell, x, y, source, value, id) {
+            if (x == 0) {
+                cell.style.color = "black";
+                if (0 <= y && y < 3) {
+                    cell.style.backgroundColor = "Fuchsia";
+                } else if (3 <= y && y < 7) {
+                    cell.style.backgroundColor = "Chartreuse";
+                } else {
+                    cell.style.backgroundColor = "Aqua";
+                }
+            }
+        }
+    });
+
+    document.getElementById('download').onclick = function () {
+        ipsheet.download(true);
+    }
+
+</script>
+
+
+
+<h2>使用者について</h2>
+<ul>
+    <li>使う人の名前を選択する。</li>
+</ul>
+<h2>機器種別の例</h2>
+<ul>
+    <li>PC : デスクトップ ・ ノート PC</li>
+    <li>ネットワーク機器 : Wifiルータ ・ NAS など</li>
+</ul>
+
+</html>
