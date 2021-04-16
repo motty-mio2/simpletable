@@ -8,10 +8,21 @@
 <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
 
 <h1>IP 割り当て</h1>
-
-<div id="spreadsheet1"></div>
-
+<h2>使用者について</h2>
+<ul>
+    <li>使う人の名前を選択する。</li>
+</ul>
+<h2>機器種別の例</h2>
+<ul>
+    <li>PC : デスクトップ ・ ノート PC</li>
+    <li>ネットワーク機器 : Wifiルータ ・ NAS など</li>
+</ul>
 <button id="download">Export as CSV</button>
+<br>
+<div id="spreadsheet1">
+</div>
+
+
 <script>
     function csvToArray(filename) {
         // CSVファイルを文字列として取得
@@ -51,7 +62,6 @@
 
     var ipsheet = jspreadsheet(document.getElementById('spreadsheet1'), {
         url: "data.json",
-        tableOverflow: true,
         columns: [
             { title: "IP アドレス", type: 'text', width: 160, readOnly: true },
             { title: "使用者", type: 'dropdown', width: 180, source: csvToArray("name.txt") },
@@ -59,6 +69,7 @@
             { title: "その他", type: 'text', width: 400 },
         ],
         onchange: save,
+
         updateTable: function (el, cell, x, y, source, value, id) {
             if (x == 0) {
                 cell.style.color = "black";
@@ -78,17 +89,5 @@
     }
 
 </script>
-
-
-
-<h2>使用者について</h2>
-<ul>
-    <li>使う人の名前を選択する。</li>
-</ul>
-<h2>機器種別の例</h2>
-<ul>
-    <li>PC : デスクトップ ・ ノート PC</li>
-    <li>ネットワーク機器 : Wifiルータ ・ NAS など</li>
-</ul>
 
 </html>
