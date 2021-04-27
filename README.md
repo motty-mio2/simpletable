@@ -14,6 +14,9 @@
 3. data.csv の IPアドレス を使用範囲に変更する
 4. csv を json 形式に適当な方法で変更 [オンライン]([https://link](https://www.ipentec.com/utils/JsonConvert/CsvToJSon.aspx)) などを用いる
 5. data.json の権限を (apache のユーザー:apache のグループ) に変更する 権限は777 などでもよい
+   - ubuntu 系なら www-data
+   - RHEL 系なら apache
+   - のはず
 6. main.html 内の `function updateTable` の if の y の条件を書き換える
    - テーブルの列見出しの色が変わる
 7. デプロイ
