@@ -13,9 +13,10 @@
 2. name.txt を適当に変更（区切りは改行で列挙）
 3. data.csv の IPアドレス を使用範囲に変更する
 4. csv を json 形式に適当な方法で変更 [オンライン]([https://link](https://www.ipentec.com/utils/JsonConvert/CsvToJSon.aspx)) などを用いる
-5. main.html 内の `function updateTable` の if の y の条件を書き換える
+5. data.json の権限を (apache のユーザー:apache のグループ) に変更する 権限は777 などでもよい
+6. main.html 内の `function updateTable` の if の y の条件を書き換える
    - テーブルの列見出しの色が変わる
-6. デプロイ
+7. デプロイ
 
 ## 設定解説
 - function csvToArray
